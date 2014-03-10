@@ -20,6 +20,19 @@ m2.x509_init(X509Error)
 
 V_OK = m2.X509_V_OK
 
+def create_extension(oid, shortname, longname):
+    """
+    Create a new ASN1_OJBJECT to be used as X509 extension.
+    """
+    return m2.obj_create(oid, shortname, longname)
+ 
+def alias_extension(nid_to, nid_from):
+    """
+    Alias a X509 extension to another one.
+    It means the they will have the same format.
+    """
+    return m2.x509v3_ext_add_alias(nid_to, nid_from)
+
 def new_extension(name, value, critical=0, _pyfree=1):
     """
     Create new X509_Extension instance.
