@@ -92,4 +92,13 @@ PyObject *obj_obj2txt(const ASN1_OBJECT *obj, int no_name)
 
     return ret;
 }
+
+int obj_create(const char *oid, const char *sn, const char *ln) {
+    int nid = OBJ_create(oid, sn, ln);
+    if (nid == 0) {
+        PyErr_SetString(_x509_err, ERR_reason_error_string(ERR_get_error()));
+        return 0;
+    }
+    return nid;
+}
 %}
