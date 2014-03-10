@@ -258,6 +258,8 @@ extern int X509_EXTENSION_set_critical(X509_EXTENSION *, int);
 %constant int NID_surname                     = 100;
 %constant int NID_givenName                   = 99;
 %constant int NID_pkcs9_emailAddress          = 48;
+%constant int NID_netscape_comment            = 78;
+%constant int NID_domainComponent             = 391;
 
 /* Cribbed from x509_vfy.h. */
 %constant int        X509_V_OK                                      = 0;
@@ -550,6 +552,15 @@ x509v3_ext_conf(LHASH                *conf, X509V3_CTX *ctx, char *name, char *v
       lh_free(conf);
 #endif
       return ext;
+}
+
+int x509v3_ext_add_alias(int nid_to, int nid_from) {
+    int ret = X509V3_EXT_add_alias(nid_to, nid_from);
+    if (ret == 0) {
+        PyErr_SetString(_x509_err, ERR_reason_error_string(ERR_get_error()));
+        return 0;
+    }
+    return 1;
 }
 
 /* X509_EXTENSION_free() might be a macro, didn't find definition. */
